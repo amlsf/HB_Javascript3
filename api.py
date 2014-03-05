@@ -54,11 +54,16 @@ def poll_for_lists():
     return render_template("todo_list_partial.html", lists=lists)
 
 
-@app.route('/todo_lists/<int:list_id>/delete', methods=["POST"])
-def delete_item(item):
+# @app.route('/todo_lists/<int:list_id>/<item>/delete', methods=["GET"])
+# def fake_item(item):
+#     return render_template('index.html', lists=todo_lists)
+
+@app.route('/todo_lists/<int:list_id>/<item>/delete', methods=["POST"])
+def delete_item(list_id, item):
+    print "I made it to the route"
     model.connect_to_db()
     model.delete_item(item)
-    return redirect(url_for("/todo_lists/<int:list_id>"))
+    return redirect(url_for("todo_list_show", id=list_id))
     # return render_template("todo_list_partial.html", lists=lists)
 
 

@@ -83,24 +83,43 @@ $('.tdlink').on("click", function(event){
 });
 
 
-//TODO: DELETION
-// var itemDeleteButton = $("#deletebutton");
+//setInterval(getItemsFromServer, 10000);
 
-// itemDeleteButton.on("click", function(event){
-//     event.preventDefault();
-//     console.log(document.url);
-//     $.ajax({
-//         url: window.location.pathname,
-//         method: "POST",
-//         data: $("form#todo-item-form").serialize(),
-//     }).done(function(data){
-//         console.log("Trying to get the items");
-//         document.getElementById("itd").innerHTML = data;
-//         console.log("I just tried");
-//     }).fail(function(){
-//         // alert('fail!!!');
-//     });
-// });
+$('.clickbox').on("click", function(event){
+    // TODO event.preventDefault();
+    $.ajax({
+        url: event.currentTarget.attributes.href.value,
+    }).done(function(response){
+        document.getElementById("allthethings").innerHTML = response;
+//         console.log(response);
+// // //          //TO DO: FIX
+// // //         document.getElementsByClassName("body")[0].innerHTML = response;
+//         console.log("You clicked a link!"+event.currentTarget.attributes.href.value);
+    }
+    );
+});
+
+
+
+
+var itemDeleteButton = $("#deletebutton");
+
+itemDeleteButton.on("click", function(event){
+    event.preventDefault();
+    deletingitem = $("form#delete-item input[name='itemtodelete']").val();
+    $.ajax({
+        url: window.location.pathname+"/"+deletingitem+"/delete",
+        method: "POST",
+        data: $("form#delete-item").serialize(),
+    }).done(function(data){
+        console.log("Trying to get the items");
+        document.getElementById("itdw").innerHTML = data;
+        console.log("I just tried to delete"+data);
+    }).fail(function(){
+        // alert('fail!!!');
+    });
+});
+
 
 // var clickedLink =$('.tdlink');
 
