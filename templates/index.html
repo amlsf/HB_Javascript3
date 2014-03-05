@@ -4,6 +4,7 @@
     </head>
 
     <body>
+        <div id="allthethings">
         <div class="container">
             <h2> Lists </h2>
             <div class="flash-messages">
@@ -12,12 +13,14 @@
                 {% endfor %}
             </div>
             <div id="todo-list">
+                <div id="tdl">
                 {% for list in lists %}
                     <div class="todo-list">
-                        <label for="item{{list.id}}"><a href="/todo_lists/{{list.id}}"> {{list.list_name}}</a></label>
+                        <label for="item{{list.id}}"><a href="/todo_lists/{{list.id}}" class="tdlink"> {{list.list_name}}</a></label>
                     </div>
                 {% endfor %}
-
+                </div>
+            </div>
                 <form id="todo_list_form" method="POST">
                     <input type="text" name="todo_list_name"></input>
                     <input type="submit" id="form_submit" value="Create new list"></input>
@@ -25,7 +28,7 @@
 
             </div>
         </div>
-
+        </div>
         <!-- Javascript files are already being loaded. Feel free to add more if needed -->
         <script src="/static/js/jquery-2.1.0.js"></script>
         <script src="/static/js/app.js"></script>

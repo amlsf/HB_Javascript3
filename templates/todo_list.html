@@ -4,6 +4,8 @@
     </head>
 
     <body>
+        
+        <a href="/">Home</a>
         <div class="container">
             <h2> Things to do </h2>
             <div class="flash-messages">
@@ -12,7 +14,8 @@
                 {% endfor %}
             </div>
             <div id="todo-list">
-
+            
+            <div id = 'itd'>
                 {% for item in items %}
                     <div class="todo-list">
                         <input id="item{{item.id}}" type="checkbox"></input>
@@ -20,15 +23,19 @@
                         <label for="item{{item.id}}">{{item.task}}</label>
                     </div>
                 {% endfor %}
-
+            </div>
                 <form id="todo-item-form" method="POST">
                     <input type="text" name="task"></input>
-                    <input type="submit" value="Create item list"></input>
+                    <input type="submit" id="itembutton" value="Create item list"></input>
                 </form>
-
             </div>
+<!--          <div>
+                <form id="delete-item" method="POST">
+                    <input type="text" name="itemtodelete"></input>
+                    <input type="submit" id="deletebutton" value="Delete this Item"></input>
+                </form>
+            </div>    -->
         </div>
-
         <!-- Javascript files are already being loaded. Feel free to add more if needed -->
         <script src="/static/js/jquery-2.1.0.js"></script>
         <script src="/static/js/app.js"></script>

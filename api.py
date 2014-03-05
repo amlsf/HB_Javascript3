@@ -1,5 +1,6 @@
-from flask import Flask, render_template, request, redirect, flash
+from flask import Flask, render_template, request, redirect, flash, url_for
 import dataset
+import model
 
 app = Flask(__name__)
 app.secret_key = "Shhhhh!! Something Secret"
@@ -15,16 +16,14 @@ def index():
 
 @app.route('/', methods=['POST'])
 def index_post():
+    # create a new list
     list_name = request.form.get('todo_list_name')
-    if not list_name:
-        flash("I'm sorry, but you'll need to specify a list name")
+    todo_lists.insert(dict(list_name=list_name))
 
-    else:
-        todo_lists.insert(dict(list_name=list_name))
-
-        flash('Todo list %s created' % list_name)
-
-    return redirect('/')
+    # return all of the lists (including our new one)
+    results = todo_lists.all()
+    lists = [l for l in results]
+    return render_template("todo_list_partial.html", lists=lists)
 
 @app.route('/todo_lists/<int:id>')
 def todo_list_show(id):
@@ -35,9 +34,17 @@ def todo_list_show(id):
 
 @app.route('/todo_lists/<int:id>', methods=["POST"])
 def todo_item_create(id):
-    resp = todo_item_table.insert(dict(task=request.form.get("task"), todo_list_id=id, done=False))    
+    # Create a new todo_item
+    # resp = todo_item_table.insert(dict(task=request.form.get("task"), todo_list_id=id, done=False))    
 
-    return redirect("/todo_lists/%d" % id)
+    # return redirect("/todo_lists/%d" % id)
+
+    todo_item_table.insert(dict(task=request.form.get("task"), todo_list_id=id, done=False))    
+
+    # return all of the items for a given list
+    items = todo_item_table.find(todo_list_id=id)
+    items = [x for x in items]
+    return render_template("todo_items_partial.html", items=items)
 
 
 @app.route('/todo_lists/poll')
@@ -47,5 +54,15 @@ def poll_for_lists():
     return render_template("todo_list_partial.html", lists=lists)
 
 
+@app.route('/todo_lists/<int:list_id>/delete', methods=["POST"])
+def delete_item(item):
+    model.connect_to_db()
+    model.delete_item(item)
+    return redirect(url_for("/todo_lists/<int:list_id>"))
+    # return render_template("todo_list_partial.html", lists=lists)
+
+
 if __name__ == '__main__':
     app.run(debug=True)
+
+
